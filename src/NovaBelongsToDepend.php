@@ -21,6 +21,7 @@ class NovaBelongsToDepend extends BelongsTo
     public $foreignKeyName;
 
     public $valueKey;
+    public $defaultValueKey;
 
     public $titleKey;
 
@@ -58,6 +59,12 @@ class NovaBelongsToDepend extends BelongsTo
     public function placeholder(string $placeholder)
     {
         $this->withMeta(['placeholder' => $placeholder]);
+        return $this;
+    }
+
+    public function defaultValueKey($key)
+    {
+        $this->defaultValueKey = $key;
         return $this;
     }
 
@@ -129,6 +136,9 @@ class NovaBelongsToDepend extends BelongsTo
         if ($value) {
             $this->valueKey = $value->getKey();
             $this->value = $this->formatDisplayValue($value);
+        } elseif ($this->defaultValueKey) {
+            $this->valueKey = $this->defaultValueKey;
+            $this->value = '-';
         }
 
         if ($this->fallback) {
